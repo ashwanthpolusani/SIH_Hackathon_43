@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Farm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        p {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Farm</h1>
+    <p>This section allows you to register a new farm. Enter the details about your farm's location, size, soil type, and other relevant information to begin tracking its productivity.</p>
+
+    <form action="/submit-farm" method="POST">
+        <label for="farm-name">Farm Name:</label>
+        <input type="text" id="farm-name" name="farm_name" placeholder="Enter your farm's name" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" placeholder="Enter the farm's location" required>
+
+        <label for="size">Farm Size (in acres):</label>
+        <input type="number" id="size" name="size" placeholder="Enter the size of the farm" required>
+
+        <label for="soil-type">Soil Type:</label>
+        <select id="soil-type" name="soil_type" required>
+            <option value="" disabled selected>Select soil type</option>
+            <option value="loamy">Loamy</option>
+            <option value="sandy">Sandy</option>
+            <option value="clay">Clay</option>
+            <option value="silt">Silt</option>
+            <option value="peaty">Peaty</option>
+            <option value="chalky">Chalky</option>
+        </select>
+
+        <label for="crops">Crops Grown:</label>
+        <textarea id="crops" name="crops" rows="3" placeholder="List the crops grown on this farm" required></textarea>
+
+        <label for="description">Farm Description:</label>
+        <textarea id="description" name="description" rows="4" placeholder="Provide a brief description of your farm"></textarea>
+
+        <button type="submit">Add Farm</button>
+    </form>
+</body>
+</html>

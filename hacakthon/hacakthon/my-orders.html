@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .order-status {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .order-status .order-container {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-container h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .order-details {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .order-details span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .order-actions {
+            margin-top: 10px;
+        }
+
+        .order-actions button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        .view-order-btn {
+            background-color: #4CAF50; /* Green */
+        }
+
+        .cancel-order-btn {
+            background-color: #FF6347; /* Tomato */
+        }
+
+        .status-processing {
+            border-left: 5px solid #ffc107; /* Amber */
+        }
+
+        .status-shipped {
+            border-left: 5px solid #17a2b8; /* Info Blue */
+        }
+
+        .status-delivered {
+            border-left: 5px solid #28a745; /* Success Green */
+        }
+
+        .status-payment {
+            border-left: 5px solid #dc3545; /* Danger Red */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>My Orders</h2>
+
+    <!-- Order Processing -->
+    <div class="order-status">
+        <h3>Order Processing</h3>
+    </div>
+    <div class="order-container status-processing">
+        <h3>Order ID: 123456</h3>
+        <div class="order-details">
+            <p><span>Product:</span> Wheat</p>
+            <p><span>Quantity:</span> 20 tons</p>
+            <p><span>Order Date:</span> August 25, 2024</p>
+            <p><span>Status:</span> Processing</p>
+        </div>
+        <div class="order-actions">
+            <button class="view-order-btn">View Order</button>
+            <button class="cancel-order-btn">Cancel Order</button>
+        </div>
+    </div>
+
+    <!-- Order Shipped -->
+    <div class="order-status">
+        <h3>Order Shipped</h3>
+    </div>
+    <div class="order-container status-shipped">
+        <h3>Order ID: 654321</h3>
+        <div class="order-details">
+            <p><span>Product:</span> Rice</p>
+            <p><span>Quantity:</span> 15 tons</p>
+            <p><span>Order Date:</span> August 28, 2024</p>
+            <p><span>Status:</span> Shipped</p>
+        </div>
+        <div class="order-actions">
+            <button class="view-order-btn">View Order</button>
+            <button class="cancel-order-btn">Cancel Order</button>
+        </div>
+    </div>
+
+    <!-- Order Delivered -->
+    <div class="order-status">
+        <h3>Order Delivered</h3>
+    </div>
+    <div class="order-container status-delivered">
+        <h3>Order ID: 789012</h3>
+        <div class="order-details">
+            <p><span>Product:</span> Corn</p>
+            <p><span>Quantity:</span> 10 tons</p>
+            <p><span>Order Date:</span> August 30, 2024</p>
+            <p><span>Status:</span> Delivered</p>
+        </div>
+        <div class="order-actions">
+            <button class="view-order-btn">View Order</button>
+            <!-- No cancel option for delivered orders -->
+        </div>
+    </div>
+
+    <!-- Order Payment -->
+    <div class="order-status">
+        <h3>Order Payment</h3>
+    </div>
+    <div class="order-container status-payment">
+        <h3>Order ID: 345678</h3>
+        <div class="order-details">
+            <p><span>Product:</span> Soybean</p>
+            <p><span>Quantity:</span> 25 tons</p>
+            <p><span>Order Date:</span> August 29, 2024</p>
+            <p><span>Status:</span> Payment Due</p>
+        </div>
+        <div class="order-actions">
+            <button class="view-order-btn">View Order</button>
+            <button class="cancel-order-btn">Cancel Order</button>
+        </div>
+    </div>
+
+</body>
+</html>
