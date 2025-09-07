@@ -47,8 +47,10 @@ We have leveraged teamwork, innovation, and technology to deliver an impactful s
 SIH_Hackathon_43/
 │
 ├── hackathon/              # Source code
+|   └──assets/              # Image files used in the project
+|
 ├── output screenshots/     # Sample screenshots of the project
-└── README.md         # Project overview
+└── README.md               # Project overview
 ```
 
 ---
