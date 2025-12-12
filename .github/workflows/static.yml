@@ -1,0 +1,5 @@
+name: Upload artifact
+uses: actions/upload-pages-artifact@v2
+  with:
+      # Upload the hackathon subdirectory
+      path: ./hackathon # <-- TO THIS
