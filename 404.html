@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Page not found – FarmConnect">
+  <title>404 – Page Not Found | FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-primary-subtle) 0%, #DCEDC8 100%);
+      text-align: center;
+      padding: var(--space-8);
+    }
+
+    .error-code {
+      font-family: var(--font-heading);
+      font-size: 8rem;
+      font-weight: var(--font-extrabold);
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: var(--space-4);
+      opacity: 0.15;
+      user-select: none;
+    }
+
+    .error-icon {
+      font-size: 5rem;
+      margin-bottom: var(--space-4);
+      display: block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .error-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      color: var(--color-text);
+      margin-bottom: var(--space-4);
+    }
+
+    .error-desc {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      max-width: 480px;
+      margin: 0 auto var(--space-8);
+      line-height: 1.7;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .countdown {
+      margin-top: var(--space-8);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    .countdown span {
+      font-weight: var(--font-semibold);
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="error-code">404</div>
+  <span class="error-icon">🌾</span>
+  <h1 class="error-title">Oops! Field Not Found</h1>
+  <p class="error-desc">
+    Looks like this crop didn't make it to harvest. The page you're looking for
+    doesn't exist or may have been moved.
+  </p>
+
+  <div class="error-actions">
+    <a href="index.html" class="btn btn-primary btn-lg">← Back to Home</a>
+    <a href="user-type-select.html" class="btn btn-secondary btn-lg">Get Started →</a>
+  </div>
+
+  <p class="countdown">
+    Redirecting to home in <span id="countdown">10</span> seconds...
+  </p>
+
+  <script>
+    let count = 10;
+    const countEl = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      count--;
+      countEl.textContent = count;
+      if (count <= 0) {
+        clearInterval(timer);
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
