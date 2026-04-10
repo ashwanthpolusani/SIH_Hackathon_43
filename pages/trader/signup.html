@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trader registration on FarmConnect — sign up to source quality agricultural produce through verified farmer contracts.">
+  <title>Trader Signup – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #FFF8E1 0%, #FFF3E0 100%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signup-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .signup-box {
+      width: 100%;
+      max-width: 560px;
+      background-color: var(--color-surface);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10);
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--color-border);
+    }
+
+    .signup-brand {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: var(--font-extrabold);
+      color: var(--color-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .signup-box h1 {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-2);
+    }
+
+    .signup-box .subtitle {
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-8);
+    }
+
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+
+    .btn-group {
+      display: flex;
+      gap: var(--space-3);
+      justify-content: flex-end;
+      margin-top: var(--space-6);
+    }
+
+    .login-prompt {
+      text-align: center;
+      margin-top: var(--space-6);
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <a href="../../user-type-select.html" class="back-link" style="margin-bottom:0;">← Back</a>
+  </div>
+</header>
+
+<div class="signup-wrapper">
+  <div class="signup-box animate-fade-in">
+
+    <div class="signup-brand">🤝 Trader Registration</div>
+    <h1>Create Your Account</h1>
+    <p class="subtitle">Join FarmConnect to source quality agricultural produce directly from verified farmers.</p>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator" id="step-indicator">
+      <div class="step active" id="step-ind-1">
+        <div class="step-number">1</div>
+        <span>Verification</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" id="step-ind-2">
+        <div class="step-number">2</div>
+        <span>Details</span>
+      </div>
+    </div>
+
+    <form id="signup-form" novalidate>
+
+      <!-- Step 1: Identity Verification -->
+      <div class="form-step active" id="step-1">
+        <div class="form-group">
+          <label for="id-type" class="form-label">Government ID Type <span class="required">*</span></label>
+          <select id="id-type" class="form-select" required>
+            <option value="" disabled selected>Select your ID type</option>
+            <option value="pan">PAN Card</option>
+            <option value="aadhaar">Aadhaar Card</option>
+            <option value="passport">Passport</option>
+            <option value="driving-license">Driving License</option>
+            <option value="gst">GST Registration</option>
+          </select>
+          <span class="form-error" id="id-type-error">Please select an ID type.</span>
+        </div>
+        <div class="form-group">
+          <label for="id-number" class="form-label">ID Number <span class="required">*</span></label>
+          <input type="text" id="id-number" class="form-input" placeholder="Enter your ID number" required>
+          <span class="form-error" id="id-number-error">Please enter your ID number.</span>
+        </div>
+        <div class="form-group">
+          <label for="document-upload" class="form-label">Upload Document (PDF/JPG/PNG)</label>
+          <input type="file" id="document-upload" class="form-input" accept=".pdf,.jpg,.jpeg,.png" style="padding:8px;">
+          <span class="form-hint">Max file size: 5MB. Clear, readable scan required.</span>
+        </div>
+        <div id="step1-alert" class="alert" style="display:none;"></div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" id="next-btn" onclick="goToStep2()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Personal Details -->
+      <div class="form-step" id="step-2">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full-name" class="form-label">Full Name <span class="required">*</span></label>
+            <input type="text" id="full-name" class="form-input" placeholder="Your full legal name" required>
+            <span class="form-error" id="name-error">Please enter your full name.</span>
+          </div>
+          <div class="form-group">
+            <label for="phone-number" class="form-label">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="phone-number" class="form-input" placeholder="10-digit number" maxlength="10" required>
+            <span class="form-error" id="phone-error">Enter valid 10-digit Indian number.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email-address" class="form-label">Email Address <span class="required">*</span></label>
+          <input type="email" id="email-address" class="form-input" placeholder="you@company.com" required autocomplete="email">
+          <span class="form-error" id="email-error">Please enter a valid email address.</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="new-password" class="form-label">Password <span class="required">*</span></label>
+            <input type="password" id="new-password" class="form-input" placeholder="At least 8 characters" required minlength="8">
+            <span class="form-error" id="password-error">Minimum 8 characters.</span>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password" class="form-label">Confirm Password <span class="required">*</span></label>
+            <input type="password" id="confirm-password" class="form-input" placeholder="Repeat your password" required>
+            <span class="form-error" id="confirm-error">Passwords do not match.</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="state" class="form-label">State <span class="required">*</span></label>
+            <select id="state" class="form-select" required>
+              <option value="" disabled selected>Select state</option>
+              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
+              <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
+              <option>Goa</option><option>Gujarat</option><option>Haryana</option>
+              <option>Himachal Pradesh</option><option>Jharkhand</option>
+              <option>Karnataka</option><option>Kerala</option>
+              <option>Madhya Pradesh</option><option>Maharashtra</option>
+              <option>Manipur</option><option>Meghalaya</option><option>Mizoram</option>
+              <option>Nagaland</option><option>Odisha</option><option>Punjab</option>
+              <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option>
+              <option selected>Telangana</option><option>Tripura</option>
+              <option>Uttar Pradesh</option><option>Uttarakhand</option>
+              <option>West Bengal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="city" class="form-label">City / District</label>
+            <input type="text" id="city" class="form-input" placeholder="Your city or district">
+          </div>
+        </div>
+        <div id="step2-alert" class="alert" style="display:none;"></div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="goToStep1()">← Back</button>
+          <button type="button" class="btn btn-primary" onclick="submitSignup()">Create Account →</button>
+        </div>
+      </div>
+
+    </form>
+
+    <p class="login-prompt">
+      Already registered? <a href="../../user-type-select.html">Select your role →</a>
+    </p>
+  </div>
+</div>
+
+<script src="../../js/auth.js"></script>
+<script src="../../js/utils.js"></script>
+<script>
+  function goToStep2() {
+    const idType   = document.getElementById('id-type').value;
+    const idNumber = document.getElementById('id-number').value.trim();
+    let valid = true;
+
+    if (!idType) {
+      document.getElementById('id-type-error').classList.add('visible');
+      valid = false;
+    } else {
+      document.getElementById('id-type-error').classList.remove('visible');
+    }
+
+    if (!idNumber) {
+      document.getElementById('id-number-error').classList.add('visible');
+      valid = false;
+    } else {
+      document.getElementById('id-number-error').classList.remove('visible');
+    }
+
+    if (!valid) return;
+
+    document.getElementById('step-1').classList.remove('active');
+    document.getElementById('step-2').classList.add('active');
+    document.getElementById('step-ind-1').classList.remove('active');
+    document.getElementById('step-ind-1').classList.add('done');
+    document.getElementById('step-ind-2').classList.add('active');
+  }
+
+  function goToStep1() {
+    document.getElementById('step-2').classList.remove('active');
+    document.getElementById('step-1').classList.add('active');
+    document.getElementById('step-ind-2').classList.remove('active');
+    document.getElementById('step-ind-1').classList.remove('done');
+    document.getElementById('step-ind-1').classList.add('active');
+  }
+
+  function submitSignup() {
+    const name    = document.getElementById('full-name').value.trim();
+    const phone   = document.getElementById('phone-number').value.trim();
+    const email   = document.getElementById('email-address').value.trim();
+    const password = document.getElementById('new-password').value;
+    const confirm  = document.getElementById('confirm-password').value;
+    const alertEl  = document.getElementById('step2-alert');
+    let valid = true;
+
+    if (!name) { document.getElementById('name-error').classList.add('visible'); valid = false; }
+    else document.getElementById('name-error').classList.remove('visible');
+
+    if (!Utils.isValidPhone(phone)) { document.getElementById('phone-error').classList.add('visible'); valid = false; }
+    else document.getElementById('phone-error').classList.remove('visible');
+
+    if (!Utils.isValidEmail(email)) { document.getElementById('email-error').classList.add('visible'); valid = false; }
+    else document.getElementById('email-error').classList.remove('visible');
+
+    if (password.length < 8) { document.getElementById('password-error').classList.add('visible'); valid = false; }
+    else document.getElementById('password-error').classList.remove('visible');
+
+    if (password !== confirm) { document.getElementById('confirm-error').classList.add('visible'); valid = false; }
+    else document.getElementById('confirm-error').classList.remove('visible');
+
+    if (!valid) return;
+
+    Auth.saveSession({ name, email, role: 'trader', phone });
+
+    alertEl.textContent = '✅ Account created! Redirecting to your dashboard...';
+    alertEl.className = 'alert alert-success';
+    alertEl.style.display = 'flex';
+
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+  }
+</script>
+</body>
+</html>
