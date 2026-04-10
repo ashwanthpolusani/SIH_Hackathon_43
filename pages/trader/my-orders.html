@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="My Orders — track all your purchase orders on FarmConnect.">
+  <title>My Orders – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body { background-color: var(--color-bg); padding-bottom: calc(var(--footer-height) + var(--space-4)); }
+    .order-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-4);
+      border-left: 5px solid var(--color-border);
+      box-shadow: var(--shadow-xs);
+    }
+    .order-card.processing { border-left-color: var(--color-warning); }
+    .order-card.shipped    { border-left-color: var(--color-info); }
+    .order-card.delivered  { border-left-color: var(--color-success); }
+    .order-card.payment    { border-left-color: var(--color-danger); }
+    .order-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+    .order-id { font-weight: var(--font-bold); color: var(--color-text); }
+    .order-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-bottom: var(--space-4); }
+    .order-detail .label { font-size: var(--text-xs); color: var(--color-text-muted); font-weight: var(--font-semibold); }
+    .order-detail .value { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--color-text); margin-top: 2px; }
+    .order-actions { display: flex; gap: var(--space-3); }
+    @media (max-width: 600px) {
+      .order-details { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <a href="dashboard.html" class="btn btn-sm btn-secondary">← Dashboard</a>
+  </div>
+</header>
+
+<main class="main-content container">
+  <div class="page-header">
+    <h1>📦 My Orders</h1>
+    <p>Track all your purchase orders from processing to delivery.</p>
+  </div>
+
+  <div class="order-card processing">
+    <div class="order-header">
+      <div class="order-id">#ORDER-FC001</div>
+      <span class="badge badge-warning">Processing</span>
+    </div>
+    <div class="order-details">
+      <div class="order-detail"><div class="label">Product</div><div class="value">Wheat</div></div>
+      <div class="order-detail"><div class="label">Quantity</div><div class="value">20 tons</div></div>
+      <div class="order-detail"><div class="label">Order Date</div><div class="value">25 Aug 2024</div></div>
+      <div class="order-detail"><div class="label">Farmer</div><div class="value">John Doe</div></div>
+    </div>
+    <div class="order-actions">
+      <button class="btn btn-sm btn-primary">View Details</button>
+      <button class="btn btn-sm btn-danger" onclick="cancelOrder(this, '#ORDER-FC001')">Cancel Order</button>
+    </div>
+  </div>
+
+  <div class="order-card shipped">
+    <div class="order-header">
+      <div class="order-id">#ORDER-FC002</div>
+      <span class="badge badge-info">Shipped</span>
+    </div>
+    <div class="order-details">
+      <div class="order-detail"><div class="label">Product</div><div class="value">Rice</div></div>
+      <div class="order-detail"><div class="label">Quantity</div><div class="value">15 tons</div></div>
+      <div class="order-detail"><div class="label">Order Date</div><div class="value">28 Aug 2024</div></div>
+      <div class="order-detail"><div class="label">Farmer</div><div class="value">Jane Smith</div></div>
+    </div>
+    <div class="order-actions">
+      <button class="btn btn-sm btn-primary">View Details</button>
+      <button class="btn btn-sm btn-info">Track Shipment</button>
+    </div>
+  </div>
+
+  <div class="order-card delivered">
+    <div class="order-header">
+      <div class="order-id">#ORDER-FC003</div>
+      <span class="badge badge-success">Delivered</span>
+    </div>
+    <div class="order-details">
+      <div class="order-detail"><div class="label">Product</div><div class="value">Corn</div></div>
+      <div class="order-detail"><div class="label">Quantity</div><div class="value">10 tons</div></div>
+      <div class="order-detail"><div class="label">Order Date</div><div class="value">30 Aug 2024</div></div>
+      <div class="order-detail"><div class="label">Farmer</div><div class="value">Bob Brown</div></div>
+    </div>
+    <div class="order-actions">
+      <button class="btn btn-sm btn-primary">View Invoice</button>
+    </div>
+  </div>
+
+  <div class="order-card payment">
+    <div class="order-header">
+      <div class="order-id">#ORDER-FC004</div>
+      <span class="badge badge-danger">Payment Due</span>
+    </div>
+    <div class="order-details">
+      <div class="order-detail"><div class="label">Product</div><div class="value">Soybean</div></div>
+      <div class="order-detail"><div class="label">Quantity</div><div class="value">25 tons</div></div>
+      <div class="order-detail"><div class="label">Order Date</div><div class="value">29 Aug 2024</div></div>
+      <div class="order-detail"><div class="label">Farmer</div><div class="value">Shruthvik Rao</div></div>
+    </div>
+    <div class="order-actions">
+      <button class="btn btn-sm btn-accent" onclick="Utils.showToast('Redirecting to payment gateway...', 'info')">Pay Now</button>
+      <button class="btn btn-sm btn-danger" onclick="cancelOrder(this, '#ORDER-FC004')">Cancel</button>
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html"><span style="font-size:1.25rem;">🏠</span><span>Home</span></a>
+  <a href="marketplace.html"><span style="font-size:1.25rem;">🛒</span><span>Market</span></a>
+  <a href="my-orders.html" class="active"><span style="font-size:1.25rem;">📦</span><span>Orders</span></a>
+  <a href="agreement.html"><span style="font-size:1.25rem;">📝</span><span>Contracts</span></a>
+</nav>
+
+<script src="../../js/utils.js"></script>
+<script>
+  function cancelOrder(btn, orderId) {
+    if (!confirm(`Cancel order ${orderId}? This cannot be undone.`)) return;
+    const card = btn.closest('.order-card');
+    card.style.transition = 'all 0.3s ease';
+    card.style.opacity = '0';
+    setTimeout(() => card.remove(), 300);
+    Utils.showToast(`Order ${orderId} cancelled.`, 'info');
+  }
+</script>
+</body>
+</html>
