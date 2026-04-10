@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="My Farm — view and manage all your registered farms on FarmConnect.">
+  <title>My Farm – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body { background-color: var(--color-bg); padding-bottom: var(--space-10); }
+    .farm-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-card);
+      margin-bottom: var(--space-5);
+      overflow: hidden;
+      transition: box-shadow var(--transition-base);
+    }
+    .farm-card:hover { box-shadow: var(--shadow-md); }
+    .farm-card-header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      padding: var(--space-5) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .farm-card-header h2 {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      color: white;
+      margin: 0;
+    }
+    .farm-card-body { padding: var(--space-6); }
+    .farm-details-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+    .detail-item { display: flex; flex-direction: column; gap: 3px; }
+    .detail-label {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: var(--font-semibold);
+    }
+    .detail-value {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--color-text);
+    }
+    .farm-actions {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      .farm-details-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <a href="dashboard.html" class="btn btn-sm btn-secondary">← Dashboard</a>
+  </div>
+</header>
+
+<main class="main-content container">
+  <div class="page-header">
+    <h1>🌾 My Farms</h1>
+    <p>View and manage all farms registered under your account.</p>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:var(--space-6);">
+    <a href="add-farm.html" class="btn btn-primary">+ Add New Farm</a>
+  </div>
+
+  <!-- Farm 1 -->
+  <div class="farm-card">
+    <div class="farm-card-header">
+      <h2>🌿 Green Valley</h2>
+      <span class="badge badge-success">Active</span>
+    </div>
+    <div class="farm-card-body">
+      <div class="farm-details-grid">
+        <div class="detail-item">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">Nanded, Maharashtra</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Farm Size</span>
+          <span class="detail-value">50 Acres</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Soil Type</span>
+          <span class="detail-value">Loamy</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Crops Grown</span>
+          <span class="detail-value">Rice, Wheat, Corn</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Active Since</span>
+          <span class="detail-value">Jan 2022</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Status</span>
+          <span class="status-indicator status-active">Active</span>
+        </div>
+      </div>
+      <div class="farm-actions">
+        <button class="btn btn-primary btn-sm">View Details</button>
+        <button class="btn btn-info btn-sm">Edit Farm</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete(this, 'Green Valley')">Delete Farm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Farm 2 -->
+  <div class="farm-card">
+    <div class="farm-card-header">
+      <h2>☀️ Sunny Acres</h2>
+      <span class="badge badge-success">Active</span>
+    </div>
+    <div class="farm-card-body">
+      <div class="farm-details-grid">
+        <div class="detail-item">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">Ludhiana, Punjab</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Farm Size</span>
+          <span class="detail-value">30 Acres</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Soil Type</span>
+          <span class="detail-value">Sandy</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Crops Grown</span>
+          <span class="detail-value">Sugarcane, Barley</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Active Since</span>
+          <span class="detail-value">Mar 2021</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Status</span>
+          <span class="status-indicator status-active">Active</span>
+        </div>
+      </div>
+      <div class="farm-actions">
+        <button class="btn btn-primary btn-sm">View Details</button>
+        <button class="btn btn-info btn-sm">Edit Farm</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete(this, 'Sunny Acres')">Delete Farm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Farm 3 -->
+  <div class="farm-card">
+    <div class="farm-card-header">
+      <h2>🌻 Golden Fields</h2>
+      <span class="badge badge-warning">Inactive</span>
+    </div>
+    <div class="farm-card-body">
+      <div class="farm-details-grid">
+        <div class="detail-item">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">Mysuru, Karnataka</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Farm Size</span>
+          <span class="detail-value">40 Acres</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Soil Type</span>
+          <span class="detail-value">Clay</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Crops Grown</span>
+          <span class="detail-value">Soybean, Millet</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Active Since</span>
+          <span class="detail-value">Jun 2020</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Status</span>
+          <span class="status-indicator status-inactive">Inactive</span>
+        </div>
+      </div>
+      <div class="farm-actions">
+        <button class="btn btn-primary btn-sm">View Details</button>
+        <button class="btn btn-info btn-sm">Edit Farm</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete(this, 'Golden Fields')">Delete Farm</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="../../js/utils.js"></script>
+<script>
+  function confirmDelete(btn, farmName) {
+    if (confirm(`Are you sure you want to delete "${farmName}"? This action cannot be undone.`)) {
+      const card = btn.closest('.farm-card');
+      card.style.transition = 'all 0.3s ease';
+      card.style.opacity = '0';
+      card.style.transform = 'translateX(20px)';
+      setTimeout(() => card.remove(), 300);
+      Utils.showToast(`"${farmName}" has been removed.`, 'success');
+    }
+  }
+</script>
+</body>
+</html>

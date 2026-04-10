@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Add a new farm — register your farm details on FarmConnect to start connecting with traders.">
+  <title>Add Farm – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body { background-color: var(--color-bg); }
+    .form-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--color-border);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <a href="my-farm.html" class="btn btn-sm btn-secondary">← My Farms</a>
+  </div>
+</header>
+
+<main class="main-content container">
+  <div class="page-header">
+    <h1>➕ Add New Farm</h1>
+    <p>Register a new farm to start listing your produce and connecting with buyers.</p>
+  </div>
+
+  <div class="form-card animate-fade-in">
+    <form id="add-farm-form" novalidate>
+
+      <div class="form-group">
+        <label for="farm-name" class="form-label">Farm Name <span class="required">*</span></label>
+        <input type="text" id="farm-name" class="form-input" placeholder="e.g. Green Valley Farm" required>
+        <span class="form-error" id="name-error">Please enter a farm name.</span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="farm-state" class="form-label">State <span class="required">*</span></label>
+          <select id="farm-state" class="form-select" required>
+            <option value="" disabled selected>Select state</option>
+            <option>Andhra Pradesh</option><option>Bihar</option><option>Chhattisgarh</option>
+            <option>Gujarat</option><option>Haryana</option><option>Karnataka</option>
+            <option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option>
+            <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+            <option>Tamil Nadu</option><option selected>Telangana</option>
+            <option>Uttar Pradesh</option><option>West Bengal</option>
+          </select>
+          <span class="form-error" id="state-error">Please select a state.</span>
+        </div>
+        <div class="form-group">
+          <label for="farm-district" class="form-label">District / City <span class="required">*</span></label>
+          <input type="text" id="farm-district" class="form-input" placeholder="e.g. Warangal" required>
+          <span class="form-error" id="district-error">Please enter a district.</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="farm-size" class="form-label">Farm Size (Acres) <span class="required">*</span></label>
+          <input type="number" id="farm-size" class="form-input" placeholder="e.g. 25" min="0.1" step="0.1" required>
+          <span class="form-error" id="size-error">Please enter a valid farm size.</span>
+        </div>
+        <div class="form-group">
+          <label for="soil-type" class="form-label">Soil Type <span class="required">*</span></label>
+          <select id="soil-type" class="form-select" required>
+            <option value="" disabled selected>Select soil type</option>
+            <option value="loamy">Loamy</option>
+            <option value="sandy">Sandy</option>
+            <option value="clay">Clay</option>
+            <option value="silt">Silt</option>
+            <option value="peaty">Peaty</option>
+            <option value="chalky">Chalky</option>
+            <option value="saline">Saline</option>
+          </select>
+          <span class="form-error" id="soil-error">Please select a soil type.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="crops-grown" class="form-label">Main Crops Grown <span class="required">*</span></label>
+        <textarea id="crops-grown" class="form-textarea" rows="2" placeholder="e.g. Wheat, Rice, Corn (comma-separated)" required></textarea>
+        <span class="form-error" id="crops-error">Please list at least one crop.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="farm-description" class="form-label">Farm Description</label>
+        <textarea id="farm-description" class="form-textarea" rows="3" placeholder="Tell buyers about your farm — water source, certifications, annual yield, etc."></textarea>
+        <span class="form-hint">Optional but helps attract traders.</span>
+      </div>
+
+      <div id="form-alert" class="alert" style="display:none;"></div>
+
+      <div style="display:flex;gap:var(--space-3);justify-content:flex-end;margin-top:var(--space-6);">
+        <a href="my-farm.html" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Farm →</button>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<script src="../../js/auth.js"></script>
+<script src="../../js/utils.js"></script>
+<script>
+  document.getElementById('add-farm-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const farmName   = document.getElementById('farm-name').value.trim();
+    const farmState  = document.getElementById('farm-state').value;
+    const farmDistrict = document.getElementById('farm-district').value.trim();
+    const farmSize   = document.getElementById('farm-size').value;
+    const soilType   = document.getElementById('soil-type').value;
+    const cropsGrown = document.getElementById('crops-grown').value.trim();
+    const farmDesc   = document.getElementById('farm-description').value.trim();
+    const alertEl    = document.getElementById('form-alert');
+
+    let isValid = true;
+
+    if (!farmName) { document.getElementById('name-error').classList.add('visible'); isValid = false; }
+    else document.getElementById('name-error').classList.remove('visible');
+
+    if (!farmState) { document.getElementById('state-error').classList.add('visible'); isValid = false; }
+    else document.getElementById('state-error').classList.remove('visible');
+
+    if (!farmDistrict) { document.getElementById('district-error').classList.add('visible'); isValid = false; }
+    else document.getElementById('district-error').classList.remove('visible');
+
+    if (!farmSize || parseFloat(farmSize) <= 0) { document.getElementById('size-error').classList.add('visible'); isValid = false; }
+    else document.getElementById('size-error').classList.remove('visible');
+
+    if (!soilType) { document.getElementById('soil-error').classList.add('visible'); isValid = false; }
+    else document.getElementById('soil-error').classList.remove('visible');
+
+    if (!cropsGrown) { document.getElementById('crops-error').classList.add('visible'); isValid = false; }
+    else document.getElementById('crops-error').classList.remove('visible');
+
+    if (!isValid) return;
+
+    // Save to localStorage
+    const existingFarms = JSON.parse(localStorage.getItem('fc_farms') || '[]');
+    const newFarm = {
+      id:          Utils.generateId(),
+      name:        farmName,
+      state:       farmState,
+      district:    farmDistrict,
+      sizeAcres:   parseFloat(farmSize),
+      soilType:    soilType,
+      crops:       cropsGrown,
+      description: farmDesc,
+      status:      'active',
+      createdAt:   new Date().toISOString(),
+    };
+    existingFarms.push(newFarm);
+    localStorage.setItem('fc_farms', JSON.stringify(existingFarms));
+
+    alertEl.textContent = '✅ Farm registered successfully! Redirecting...';
+    alertEl.className = 'alert alert-success';
+    alertEl.style.display = 'flex';
+
+    setTimeout(() => { window.location.href = 'my-farm.html'; }, 1500);
+  });
+</script>
+</body>
+</html>
