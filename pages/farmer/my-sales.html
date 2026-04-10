@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="My Sales — track all your crop sale orders on FarmConnect.">
+  <title>My Sales – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body { background-color: var(--color-bg); padding-bottom: var(--space-10); }
+    .sale-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-4);
+      box-shadow: var(--shadow-xs);
+      border-left: 5px solid var(--color-border);
+      transition: box-shadow var(--transition-fast);
+    }
+    .sale-card:hover { box-shadow: var(--shadow-sm); }
+    .sale-card.processing { border-left-color: var(--color-warning); }
+    .sale-card.shipped    { border-left-color: var(--color-info); }
+    .sale-card.delivered  { border-left-color: var(--color-success); }
+    .sale-card.payment    { border-left-color: var(--color-danger); }
+    .sale-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+    .sale-id { font-weight: var(--font-bold); font-size: var(--text-base); color: var(--color-text); }
+    .sale-details {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+    .sale-detail-item .label { font-size: var(--text-xs); color: var(--color-text-muted); font-weight: var(--font-semibold); }
+    .sale-detail-item .value { font-size: var(--text-sm); color: var(--color-text); font-weight: var(--font-medium); margin-top: 2px; }
+    .sale-actions { display: flex; gap: var(--space-3); }
+    @media (max-width: 600px) { .sale-details { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <a href="dashboard.html" class="btn btn-sm btn-secondary">← Dashboard</a>
+  </div>
+</header>
+
+<main class="main-content container">
+  <div class="page-header">
+    <h1>📦 My Sales</h1>
+    <p>Track all active and completed crop sale orders.</p>
+  </div>
+
+  <div id="sales-list">
+    <div class="sale-card processing">
+      <div class="sale-header">
+        <div class="sale-id">#SALE-FC001</div>
+        <span class="badge badge-warning">Processing</span>
+      </div>
+      <div class="sale-details">
+        <div class="sale-detail-item"><div class="label">Product</div><div class="value">Wheat</div></div>
+        <div class="sale-detail-item"><div class="label">Quantity</div><div class="value">20 tons</div></div>
+        <div class="sale-detail-item"><div class="label">Sale Date</div><div class="value">25 Aug 2024</div></div>
+        <div class="sale-detail-item"><div class="label">Buyer</div><div class="value">Alice Johnson</div></div>
+      </div>
+      <div class="sale-actions">
+        <button class="btn btn-sm btn-primary">View Details</button>
+        <button class="btn btn-sm btn-danger" onclick="cancelSale(this, '#SALE-FC001')">Cancel Sale</button>
+      </div>
+    </div>
+
+    <div class="sale-card shipped">
+      <div class="sale-header">
+        <div class="sale-id">#SALE-FC002</div>
+        <span class="badge badge-info">Shipped</span>
+      </div>
+      <div class="sale-details">
+        <div class="sale-detail-item"><div class="label">Product</div><div class="value">Rice</div></div>
+        <div class="sale-detail-item"><div class="label">Quantity</div><div class="value">15 tons</div></div>
+        <div class="sale-detail-item"><div class="label">Sale Date</div><div class="value">28 Aug 2024</div></div>
+        <div class="sale-detail-item"><div class="label">Buyer</div><div class="value">Michael Smith</div></div>
+      </div>
+      <div class="sale-actions">
+        <button class="btn btn-sm btn-primary">View Details</button>
+      </div>
+    </div>
+
+    <div class="sale-card delivered">
+      <div class="sale-header">
+        <div class="sale-id">#SALE-FC003</div>
+        <span class="badge badge-success">Delivered</span>
+      </div>
+      <div class="sale-details">
+        <div class="sale-detail-item"><div class="label">Product</div><div class="value">Corn</div></div>
+        <div class="sale-detail-item"><div class="label">Quantity</div><div class="value">10 tons</div></div>
+        <div class="sale-detail-item"><div class="label">Sale Date</div><div class="value">30 Aug 2024</div></div>
+        <div class="sale-detail-item"><div class="label">Buyer</div><div class="value">Sarah Brown</div></div>
+      </div>
+      <div class="sale-actions">
+        <button class="btn btn-sm btn-primary">View Details</button>
+      </div>
+    </div>
+
+    <div class="sale-card payment">
+      <div class="sale-header">
+        <div class="sale-id">#SALE-FC004</div>
+        <span class="badge badge-danger">Payment Due</span>
+      </div>
+      <div class="sale-details">
+        <div class="sale-detail-item"><div class="label">Product</div><div class="value">Soybean</div></div>
+        <div class="sale-detail-item"><div class="label">Quantity</div><div class="value">25 tons</div></div>
+        <div class="sale-detail-item"><div class="label">Sale Date</div><div class="value">29 Aug 2024</div></div>
+        <div class="sale-detail-item"><div class="label">Buyer</div><div class="value">Rajesh Kumar</div></div>
+      </div>
+      <div class="sale-actions">
+        <button class="btn btn-sm btn-primary">View Details</button>
+        <button class="btn btn-sm btn-danger" onclick="cancelSale(this, '#SALE-FC004')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="../../js/utils.js"></script>
+<script>
+  function cancelSale(btn, saleId) {
+    if (!confirm(`Cancel sale ${saleId}? This cannot be undone.`)) return;
+    const card = btn.closest('.sale-card');
+    card.style.transition = 'all 0.3s ease';
+    card.style.opacity = '0';
+    setTimeout(() => card.remove(), 300);
+    Utils.showToast(`Sale ${saleId} cancelled.`, 'info');
+  }
+</script>
+</body>
+</html>

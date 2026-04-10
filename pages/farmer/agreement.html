@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contract Agreement — sign your farming contract via DocuSign on FarmConnect.">
+  <title>Contract Agreement – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--color-primary-subtle), #DCEDC8);
+      display: flex;
+      flex-direction: column;
+    }
+    .agreement-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8) var(--space-6);
+    }
+    .agreement-box {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10);
+      max-width: 560px;
+      width: 100%;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--color-border);
+      text-align: center;
+    }
+    .agreement-icon { font-size: 3rem; margin-bottom: var(--space-4); display: block; }
+    .agreement-box h1 { font-size: var(--text-2xl); margin-bottom: var(--space-3); }
+    .agreement-box p { color: var(--color-text-secondary); margin-bottom: var(--space-6); }
+    .contract-info {
+      background-color: var(--color-surface-alt);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-6);
+      text-align: left;
+      border: 1px solid var(--color-border);
+    }
+    .contract-info .info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--text-sm);
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .contract-info .info-row:last-child { border-bottom: none; }
+    .contract-info .info-label { color: var(--color-text-muted); }
+    .contract-info .info-value { font-weight: var(--font-semibold); color: var(--color-text); }
+    .disclaimer {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: var(--space-4);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <button class="btn btn-sm btn-secondary" id="back-btn">← Back</button>
+  </div>
+</header>
+
+<div class="agreement-wrapper">
+  <div class="agreement-box animate-fade-in">
+    <span class="agreement-icon">📝</span>
+    <h1 id="agreement-title">Contract Agreement</h1>
+    <p id="agreement-desc">Please review the details below and proceed to sign your contract digitally via DocuSign.</p>
+
+    <div class="contract-info">
+      <div class="info-row">
+        <span class="info-label">Contract ID</span>
+        <span class="info-value" id="contract-id">FC-2024-001</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Your Role</span>
+        <span class="info-value" id="user-role-display">Farmer</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Counterparty</span>
+        <span class="info-value">Alice Johnson (Trader)</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Produce</span>
+        <span class="info-value">Corn — 50 Metric Tons</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Agreed Price</span>
+        <span class="info-value">₹3,000 / Quintal</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Delivery By</span>
+        <span class="info-value">15 December 2024</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="info-value"><span class="badge badge-warning">Pending Signature</span></span>
+      </div>
+    </div>
+
+    <a href="https://apps.docusign.com/send/sent/19270054-d660-46eb-a33c-d7965d0cec22"
+       id="docusign-link"
+       class="btn btn-primary btn-lg btn-full"
+       target="_blank"
+       rel="noopener noreferrer">
+      ✍️ Sign Contract on DocuSign →
+    </a>
+
+    <p class="disclaimer">
+      By clicking above, you will be redirected to DocuSign — a trusted e-signature platform.
+      FarmConnect does not store your signature data. You will receive a copy to your registered email.
+    </p>
+  </div>
+</div>
+
+<script src="../../js/auth.js"></script>
+<script src="../../js/utils.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const session = Auth.getSession();
+    const role = session.role || 'farmer';
+
+    document.getElementById('user-role-display').textContent = Utils.capitalize(role);
+    document.getElementById('agreement-title').textContent =
+      role === 'farmer' ? 'Farmer Contract Agreement' : 'Trader Contract Agreement';
+    document.getElementById('agreement-desc').textContent =
+      role === 'farmer'
+        ? 'Review the contract terms below, then sign digitally to confirm your commitment to the buyer.'
+        : 'Review the purchase agreement terms below, then sign digitally to finalize this contract with the farmer.';
+
+    document.getElementById('back-btn').onclick = () => {
+      if (role === 'trader') {
+        window.location.href = '../trader/dashboard.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    };
+
+    document.getElementById('contract-id').textContent = `FC-${Utils.generateId(6)}`;
+  });
+</script>
+</body>
+</html>
