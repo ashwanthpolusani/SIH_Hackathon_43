@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crop Calendar — plan and track your planting and harvest schedules on FarmConnect.">
+  <title>Crop Calendar – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body { background-color: var(--color-bg); padding-bottom: var(--space-10); }
+
+    .add-entry-form {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      padding: var(--space-6);
+      margin-bottom: var(--space-8);
+    }
+
+    .add-entry-form h2 {
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-5);
+      color: var(--color-text);
+    }
+
+    .crop-status-planted  { color: var(--color-info); font-weight: var(--font-medium); }
+    .crop-status-harvested { color: var(--color-success); font-weight: var(--font-medium); }
+    .crop-status-planned  { color: var(--color-warning); font-weight: var(--font-medium); }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <a href="dashboard.html" class="btn btn-sm btn-secondary">← Dashboard</a>
+  </div>
+</header>
+
+<main class="main-content container">
+  <div class="page-header">
+    <h1>🗓️ Crop Calendar</h1>
+    <p>Track your planting and harvest schedules for optimal farm productivity.</p>
+  </div>
+
+  <!-- Add Entry Form -->
+  <div class="add-entry-form animate-fade-in">
+    <h2>+ Add New Crop Entry</h2>
+    <form id="add-crop-form" novalidate>
+      <div class="form-row" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+        <div class="form-group">
+          <label for="crop-name" class="form-label">Crop Name <span class="required">*</span></label>
+          <input type="text" id="crop-name" class="form-input" placeholder="e.g. Wheat" required>
+        </div>
+        <div class="form-group">
+          <label for="plant-date" class="form-label">Planting Date <span class="required">*</span></label>
+          <input type="date" id="plant-date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="harvest-date" class="form-label">Expected Harvest <span class="required">*</span></label>
+          <input type="date" id="harvest-date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="crop-status" class="form-label">Status</label>
+          <select id="crop-status" class="form-select">
+            <option value="Planned">Planned</option>
+            <option value="Planted">Planted</option>
+            <option value="Growing">Growing</option>
+            <option value="Harvested">Harvested</option>
+          </select>
+        </div>
+      </div>
+      <div id="crop-form-alert" class="alert" style="display:none;"></div>
+      <button type="submit" class="btn btn-primary">Add Entry</button>
+    </form>
+  </div>
+
+  <!-- Calendar Table -->
+  <div class="table-wrapper" id="calendar-table-wrapper">
+    <table id="crop-calendar-table">
+      <thead>
+        <tr>
+          <th>Crop</th>
+          <th>Planting Date</th>
+          <th>Expected Harvest</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-tbody">
+        <!-- Seeded from JS -->
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<script src="../../js/utils.js"></script>
+<script>
+  const STORAGE_KEY = 'fc_crop_calendar';
+
+  const defaultEntries = [
+    { id: '1', crop: 'Wheat',  plantDate: '2024-10-15', harvestDate: '2025-03-25', status: 'Planted' },
+    { id: '2', crop: 'Rice',   plantDate: '2024-06-10', harvestDate: '2024-10-05', status: 'Harvested' },
+    { id: '3', crop: 'Corn',   plantDate: '2024-04-01', harvestDate: '2024-07-20', status: 'Harvested' },
+    { id: '4', crop: 'Barley', plantDate: '2024-11-05', harvestDate: '2025-04-15', status: 'Planned' },
+  ];
+
+  function loadEntries() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : defaultEntries;
+  }
+
+  function saveEntries(entries) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  function getStatusClass(status) {
+    const map = {
+      'Planted':   'crop-status-planted',
+      'Harvested': 'crop-status-harvested',
+      'Planned':   'crop-status-planned',
+      'Growing':   'crop-status-planted',
+    };
+    return map[status] || '';
+  }
+
+  function renderTable() {
+    const entries = loadEntries();
+    const tbody = document.getElementById('calendar-tbody');
+    if (entries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--color-text-muted);padding:var(--space-8);">No crop entries yet. Add your first crop above.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = entries.map(entry => `
+      <tr>
+        <td><strong>${entry.crop}</strong></td>
+        <td>${Utils.formatDate(entry.plantDate)}</td>
+        <td>${Utils.formatDate(entry.harvestDate)}</td>
+        <td><span class="${getStatusClass(entry.status)}">${entry.status}</span></td>
+        <td>
+          <button class="btn btn-sm btn-danger" onclick="deleteEntry('${entry.id}')">Remove</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function deleteEntry(entryId) {
+    let entries = loadEntries();
+    entries = entries.filter(e => e.id !== entryId);
+    saveEntries(entries);
+    renderTable();
+    Utils.showToast('Crop entry removed.', 'info');
+  }
+
+  document.getElementById('add-crop-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const cropName    = document.getElementById('crop-name').value.trim();
+    const plantDate   = document.getElementById('plant-date').value;
+    const harvestDate = document.getElementById('harvest-date').value;
+    const cropStatus  = document.getElementById('crop-status').value;
+    const alertEl     = document.getElementById('crop-form-alert');
+
+    if (!cropName || !plantDate || !harvestDate) {
+      alertEl.textContent = 'Please fill in all required fields.';
+      alertEl.className = 'alert alert-error';
+      alertEl.style.display = 'flex';
+      return;
+    }
+
+    if (new Date(harvestDate) <= new Date(plantDate)) {
+      alertEl.textContent = 'Harvest date must be after planting date.';
+      alertEl.className = 'alert alert-error';
+      alertEl.style.display = 'flex';
+      return;
+    }
+
+    alertEl.style.display = 'none';
+    const entries = loadEntries();
+    entries.push({
+      id:          Utils.generateId(),
+      crop:        Utils.capitalize(cropName),
+      plantDate,
+      harvestDate,
+      status:      cropStatus,
+    });
+    saveEntries(entries);
+    renderTable();
+    this.reset();
+    Utils.showToast(`"${Utils.capitalize(cropName)}" added to calendar.`, 'success');
+  });
+
+  renderTable();
+</script>
+</body>
+</html>
