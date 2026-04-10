@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FarmConnect — India's trusted Assured Contract Farming platform. Connecting farmers with reliable buyers for stable income, transparent contracts, and fair market access.">
+  <meta property="og:title"       content="FarmConnect – Assured Contract Farming">
+  <meta property="og:description" content="Stable income for farmers. Quality produce for buyers. FarmConnect bridges the gap.">
+  <meta property="og:type"        content="website">
+  <title>FarmConnect – Assured Contract Farming System</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    /* ── Landing Page Specific ── */
+    .hero {
+      background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80');
+      min-height: 100vh;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: var(--space-8);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: var(--space-10);
+      padding-top: var(--space-8);
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat .number {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-extrabold);
+      color: var(--color-accent);
+    }
+
+    .hero-stat .label {
+      font-size: var(--text-sm);
+      color: rgba(255,255,255,0.75);
+      margin-top: var(--space-1);
+    }
+
+    /* ── How It Works ── */
+    .how-it-works {
+      background-color: var(--color-surface);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+      counter-reset: step-counter;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: var(--space-6);
+      position: relative;
+    }
+
+    .step-card::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+      color: white;
+      font-family: var(--font-heading);
+      font-weight: var(--font-bold);
+      font-size: var(--text-lg);
+      border-radius: 50%;
+      margin: 0 auto var(--space-4);
+    }
+
+    .step-card h3 {
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-3);
+      color: var(--color-text);
+    }
+
+    .step-card p {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    /* ── Services Section ── */
+    .services-section {
+      background-color: var(--color-bg);
+    }
+
+    .service-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--color-border);
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+      text-align: center;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-4);
+      display: block;
+    }
+
+    .service-card h3 {
+      font-size: var(--text-xl);
+      color: var(--color-primary-dark);
+      margin-bottom: var(--space-3);
+    }
+
+    .service-card p {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── Testimonials ── */
+    .testimonials-section {
+      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+      color: white;
+    }
+
+    .testimonials-section .section-title,
+    .testimonials-section .section-subtitle {
+      color: white;
+    }
+
+    .testimonial-card {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      backdrop-filter: blur(8px);
+    }
+
+    .testimonial-quote {
+      font-size: var(--text-lg);
+      line-height: 1.7;
+      margin-bottom: var(--space-6);
+      color: rgba(255,255,255,0.92);
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: var(--font-bold);
+      font-size: var(--text-lg);
+      color: var(--color-text);
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-weight: var(--font-semibold);
+      color: white;
+      font-size: var(--text-sm);
+    }
+
+    .author-location {
+      font-size: var(--text-xs);
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Contact Section ── */
+    .contact-section {
+      background-color: var(--color-surface);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: var(--text-2xl);
+      color: var(--color-text);
+      margin-bottom: var(--space-4);
+    }
+
+    .contact-info p {
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-6);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .contact-item span:first-child {
+      font-size: 1.25rem;
+    }
+
+    .contact-form-wrapper {
+      background-color: var(--color-surface-alt);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      border: 1px solid var(--color-border);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      background-color: var(--color-text);
+      color: rgba(255,255,255,0.75);
+      padding: var(--space-12) var(--space-6) var(--space-6);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-10);
+      margin-bottom: var(--space-10);
+    }
+
+    .footer-brand {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: var(--font-extrabold);
+      color: white;
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .footer-desc {
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .footer-col h4 {
+      color: white;
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .footer-links a {
+      font-size: var(--text-sm);
+      color: rgba(255,255,255,0.6);
+      transition: color var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      color: var(--color-primary-light);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+      color: rgba(255,255,255,0.5);
+    }
+
+    @media (max-width: 1024px) {
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: var(--space-6); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<header class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <nav>
+      <ul class="navbar-nav">
+        <li><a href="#about"    class="nav-link">About</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#how"      class="nav-link">How It Works</a></li>
+        <li><a href="#contact"  class="nav-link">Contact</a></li>
+        <li>
+          <a href="user-type-select.html" class="btn btn-primary btn-sm">
+            Get Started →
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Hero Section ── -->
+<section id="home" class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">🇮🇳 India's Trusted Agri-Platform</span>
+    <h1>Assured Contract<br>Farming System</h1>
+    <p>Bridging the gap between farmers and buyers through transparent contracts, guaranteed market access, and fair pricing — powered by technology.</p>
+    <div class="hero-actions">
+      <a href="user-type-select.html" class="btn btn-accent btn-lg">Start Farming Smarter →</a>
+      <a href="#about" class="btn btn-secondary btn-lg" style="border-color:rgba(255,255,255,0.6);color:white;">
+        Learn More
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number">2,400+</div>
+        <div class="label">Farmers Registered</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">850+</div>
+        <div class="label">Contracts Completed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">₹4.2Cr</div>
+        <div class="label">Total Earnings Facilitated</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">18+</div>
+        <div class="label">States Covered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── About Section ── -->
+<section id="about" class="section" style="background-color: var(--color-surface);">
+  <div class="container text-center">
+    <h2 class="section-title">Why FarmConnect?</h2>
+    <p class="section-subtitle">We are committed to transforming India's agricultural ecosystem by providing stable market access, fair agreements, and timely payments for every farmer.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <div style="font-size:2rem;margin-bottom:var(--space-4);">🤝</div>
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-3);">Transparent Contracts</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);">Every agreement is documented digitally via DocuSign. No hidden clauses, no broken promises.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body text-center">
+          <div style="font-size:2rem;margin-bottom:var(--space-4);">💰</div>
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-3);">Guaranteed Payments</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);">Buyers commit to pricing upfront. Farmers are secured against market volatility and price drops.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body text-center">
+          <div style="font-size:2rem;margin-bottom:var(--space-4);">📈</div>
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-3);">Market Access</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);">Direct connections to verified buyers across India. No middlemen, no uncertainty.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Services Section ── -->
+<section id="services" class="section services-section">
+  <div class="container text-center">
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-subtitle">Everything a modern farmer or buyer needs, in one platform.</p>
+    <div class="grid-3">
+      <div class="service-card">
+        <span class="service-icon">📋</span>
+        <h3>Contract Management</h3>
+        <p>Create, negotiate, and sign contracts digitally. Track contract status in real-time from initiation to completion.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🛒</span>
+        <h3>Live Marketplace</h3>
+        <p>Browse current crop listings with real-time prices, quantities, and locations. Search and sort with ease.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🗓️</span>
+        <h3>Crop Calendar</h3>
+        <p>Plan your agricultural cycle with a smart crop calendar. Track planting, growth, and harvest schedules.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">✅</span>
+        <h3>Quality Assurance</h3>
+        <p>Standardized quality checks and produce grading ensure buyers receive what they agreed upon.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🌾</span>
+        <h3>Farm Management</h3>
+        <p>Register and manage multiple farms. Track soil types, crop cycles, and farm-level productivity.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📊</span>
+        <h3>Order Tracking</h3>
+        <p>Real-time order and sales tracking from processing to delivery. Full transparency for all parties.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ── -->
+<section id="how" class="section how-it-works">
+  <div class="container text-center">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">Get started in minutes and begin growing your agricultural business the right way.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <h3>Register Your Account</h3>
+        <p>Sign up as a Farmer or Trader. Verify your identity with a valid government ID.</p>
+      </div>
+      <div class="step-card">
+        <h3>Set Up Your Profile</h3>
+        <p>Farmers add farm details and crop listings. Traders specify their buying requirements.</p>
+      </div>
+      <div class="step-card">
+        <h3>Connect & Negotiate</h3>
+        <p>Browse the marketplace, discover opportunities, and initiate contract negotiations.</p>
+      </div>
+      <div class="step-card">
+        <h3>Sign & Earn</h3>
+        <p>Digitally sign your contract via DocuSign and begin a trusted, guaranteed partnership.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Testimonials ── -->
+<section class="section testimonials-section">
+  <div class="container text-center">
+    <h2 class="section-title">Trusted by Farmers Across India</h2>
+    <p class="section-subtitle">Hear from farmers and traders who have transformed their business with FarmConnect.</p>
+    <div class="grid-3">
+      <div class="testimonial-card">
+        <p class="testimonial-quote">"Before FarmConnect, I had no idea what price I'd get for my wheat. Now I sign a contract before I even sow the seeds. Total peace of mind."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">R</div>
+          <div>
+            <div class="author-name">Ramesh Kumar</div>
+            <div class="author-location">Wheat Farmer, Warangal, Telangana</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">"As a buyer, finding reliable farmers who meet quality standards was always a challenge. FarmConnect solved that completely for our supply chain."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">P</div>
+          <div>
+            <div class="author-name">Priya Nair</div>
+            <div class="author-location">Agri Trader, Kochi, Kerala</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">"The crop calendar and farm management tools have genuinely improved how I plan my seasons. My yield improved by nearly 20% last year."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">S</div>
+          <div>
+            <div class="author-name">Santosh Patel</div>
+            <div class="author-location">Rice Farmer, Nanded, Maharashtra</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact Section ── -->
+<section id="contact" class="section contact-section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2 class="section-title" style="text-align:left;margin-bottom:var(--space-4);">Get In Touch</h2>
+        <p>Have a question or want to list your farm? Reach out to our team and we'll respond within 24 hours.</p>
+        <div class="contact-item">
+          <span>📧</span>
+          <span>ashwanthpolusani@gmail.com</span>
+        </div>
+        <div class="contact-item">
+          <span>📍</span>
+          <span>Hyderabad, Telangana, India</span>
+        </div>
+        <div class="contact-item">
+          <span>🕐</span>
+          <span>Mon–Sat, 9:00 AM – 6:00 PM IST</span>
+        </div>
+      </div>
+      <div class="contact-form-wrapper">
+        <form id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="contact-name" class="form-label">Full Name <span class="required">*</span></label>
+            <input type="text" id="contact-name" class="form-input" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="contact-email" class="form-label">Email Address <span class="required">*</span></label>
+            <input type="email" id="contact-email" class="form-input" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="contact-message" class="form-label">Message <span class="required">*</span></label>
+            <textarea id="contact-message" class="form-textarea" rows="4" placeholder="How can we help you?" required></textarea>
+          </div>
+          <div id="contact-alert" class="alert" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-full">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">🌾 FarmConnect</div>
+        <p class="footer-desc">India's trusted Assured Contract Farming platform — connecting farmers to stable markets and helping buyers source quality produce reliably.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="user-type-select.html">Get Started</a></li>
+          <li><a href="#services">Our Services</a></li>
+          <li><a href="#how">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Farmers</h4>
+        <ul class="footer-links">
+          <li><a href="pages/farmer/login.html">Farmer Login</a></li>
+          <li><a href="pages/farmer/dashboard.html">Dashboard</a></li>
+          <li><a href="pages/farmer/crop-calendar.html">Crop Calendar</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Traders</h4>
+        <ul class="footer-links">
+          <li><a href="pages/trader/signup.html">Trader Signup</a></li>
+          <li><a href="pages/trader/marketplace.html">Marketplace</a></li>
+          <li><a href="pages/trader/my-orders.html">My Orders</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 FarmConnect. All Rights Reserved. Built for SIH Hackathon 2024.</p>
+      <p>Made with ❤️ by Team FarmConnect, Telangana</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Contact Form Handler ──
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name    = document.getElementById('contact-name').value.trim();
+    const email   = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    const alertEl = document.getElementById('contact-alert');
+
+    if (!name || !email || !message) {
+      alertEl.textContent = 'Please fill in all required fields.';
+      alertEl.className = 'alert alert-error';
+      alertEl.style.display = 'flex';
+      return;
+    }
+
+    // Simulate submission
+    alertEl.textContent = '✅ Thank you! Your message has been sent. We\'ll respond within 24 hours.';
+    alertEl.className = 'alert alert-success';
+    alertEl.style.display = 'flex';
+    this.reset();
+
+    setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
+  });
+
+  // ── Smooth active nav highlighting ──
+  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+  const sections = document.querySelectorAll('section[id]');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+</body>
+</html>
