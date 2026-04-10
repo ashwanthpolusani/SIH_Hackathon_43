@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Farmer login — Sign in to your FarmConnect account to manage your farm, view contracts, and access the marketplace.">
+  <title>Farmer Login – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background-color: var(--color-surface);
+    }
+
+    .login-visual {
+      background-image: url('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=900&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-12);
+    }
+
+    .login-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(27,94,32,0.9) 0%, rgba(46,125,50,0.4) 60%, transparent 100%);
+    }
+
+    .login-visual-content {
+      position: relative;
+      z-index: 1;
+      color: white;
+    }
+
+    .login-visual-content h2 {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      color: white;
+      margin-bottom: var(--space-3);
+    }
+
+    .login-visual-content p {
+      font-size: var(--text-sm);
+      color: rgba(255,255,255,0.8);
+    }
+
+    .login-form-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-12) var(--space-10);
+      background-color: var(--color-surface);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-brand {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: var(--font-extrabold);
+      color: var(--color-primary);
+      margin-bottom: var(--space-8);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .login-box h1 {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-2);
+    }
+
+    .login-box .subtitle {
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-8);
+    }
+
+    .otp-form {
+      margin-top: var(--space-6);
+    }
+
+    .forgot-link {
+      text-align: right;
+      margin-top: calc(-1 * var(--space-3));
+      margin-bottom: var(--space-5);
+    }
+
+    .forgot-link a {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+
+    .register-prompt {
+      margin-top: var(--space-6);
+      text-align: center;
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .login-visual { display: none; }
+      .login-form-side { padding: var(--space-8) var(--space-6); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Visual Left Side -->
+<div class="login-visual">
+  <div class="login-visual-overlay"></div>
+  <div class="login-visual-content">
+    <h2>Grow more.<br>Worry less.</h2>
+    <p>FarmConnect helps you secure buyers before the season starts — so you can focus on farming.</p>
+  </div>
+</div>
+
+<!-- Form Right Side -->
+<div class="login-form-side">
+  <div class="login-box animate-fade-in">
+
+    <a href="../../user-type-select.html" class="back-link">← Back</a>
+
+    <div class="login-brand">🌾 FarmConnect</div>
+    <h1>Farmer Login</h1>
+    <p class="subtitle">Welcome back! Sign in to access your dashboard.</p>
+
+    <!-- Email + Password Login -->
+    <form id="farmer-login-form" novalidate>
+      <div class="form-group">
+        <label for="login-email" class="form-label">Email Address <span class="required">*</span></label>
+        <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+        <span class="form-error" id="email-error">Please enter a valid email address.</span>
+      </div>
+      <div class="form-group">
+        <label for="login-password" class="form-label">Password <span class="required">*</span></label>
+        <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+        <span class="form-error" id="password-error">Password must be at least 6 characters.</span>
+      </div>
+
+      <div class="forgot-link">
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <div class="form-group">
+        <label for="login-name" class="form-label">Full Name (for greeting)</label>
+        <input type="text" id="login-name" class="form-input" placeholder="Your name" autocomplete="name">
+      </div>
+
+      <div id="login-alert" class="alert" style="display:none;"></div>
+
+      <button type="submit" class="btn btn-primary btn-full">Sign In →</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <!-- OTP Login -->
+    <form id="otp-login-form" class="otp-form" novalidate>
+      <div class="form-group">
+        <label for="otp-phone" class="form-label">Phone Number</label>
+        <input type="tel" id="otp-phone" class="form-input" placeholder="10-digit mobile number" maxlength="10" autocomplete="tel">
+        <span class="form-hint">We'll send an OTP to verify your number.</span>
+        <span class="form-error" id="phone-error">Enter a valid 10-digit Indian phone number.</span>
+      </div>
+      <button type="submit" class="btn btn-secondary btn-full">Login with OTP</button>
+    </form>
+
+    <p class="register-prompt">
+      Not a farmer? <a href="../../user-type-select.html">Change role →</a>
+    </p>
+  </div>
+</div>
+
+<script src="../../js/auth.js"></script>
+<script src="../../js/utils.js"></script>
+<script>
+  const loginForm  = document.getElementById('farmer-login-form');
+  const otpForm    = document.getElementById('otp-login-form');
+  const loginAlert = document.getElementById('login-alert');
+
+  function showAlert(message, type) {
+    loginAlert.textContent = message;
+    loginAlert.className   = `alert alert-${type}`;
+    loginAlert.style.display = 'flex';
+  }
+
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const name     = document.getElementById('login-name').value.trim();
+
+    let isValid = true;
+
+    if (!Utils.isValidEmail(email)) {
+      document.getElementById('email-error').classList.add('visible');
+      isValid = false;
+    } else {
+      document.getElementById('email-error').classList.remove('visible');
+    }
+
+    if (password.length < 6) {
+      document.getElementById('password-error').classList.add('visible');
+      isValid = false;
+    } else {
+      document.getElementById('password-error').classList.remove('visible');
+    }
+
+    if (!isValid) return;
+
+    // Save session and redirect to farmer dashboard
+    Auth.saveSession({ name: name || email.split('@')[0], email, role: 'farmer' });
+    showAlert('✅ Login successful! Redirecting...', 'success');
+
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 1000);
+  });
+
+  otpForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const phone = document.getElementById('otp-phone').value.trim();
+
+    if (!Utils.isValidPhone(phone)) {
+      document.getElementById('phone-error').classList.add('visible');
+      return;
+    }
+
+    document.getElementById('phone-error').classList.remove('visible');
+    // In a real app: send OTP via API
+    showAlert(`📱 OTP sent to ${phone}. (Demo: OTP login not connected to backend)`, 'info');
+  });
+</script>
+</body>
+</html>
