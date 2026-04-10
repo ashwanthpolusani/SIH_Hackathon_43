@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trader Dashboard — manage contracts, browse farmers, and track orders on FarmConnect.">
+  <title>Trader Dashboard – FarmConnect</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  <link rel="stylesheet" href="../../css/global.css">
+  <style>
+    body { background-color: var(--color-bg); padding-bottom: calc(var(--footer-height) + var(--space-4)); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    .stat-box {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-5);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .stat-box .stat-num {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-extrabold);
+      color: var(--color-primary);
+    }
+
+    .stat-box .stat-label {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+
+    .stat-box .stat-change {
+      font-size: var(--text-xs);
+      color: var(--color-success);
+      font-weight: var(--font-medium);
+      margin-top: var(--space-2);
+    }
+
+    .farmer-filter {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+      flex-wrap: wrap;
+    }
+
+    .farmer-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-3);
+      transition: box-shadow var(--transition-fast);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .farmer-card:hover { box-shadow: var(--shadow-sm); }
+
+    .farmer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary-subtle), var(--color-primary-light));
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: var(--font-bold);
+      font-size: var(--text-base);
+      flex-shrink: 0;
+    }
+
+    .farmer-info { flex: 1; }
+    .farmer-name { font-weight: var(--font-semibold); color: var(--color-text); font-size: var(--text-sm); }
+    .farmer-meta { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+    .farmer-meta span { margin-right: var(--space-3); }
+    .farmer-actions { display: flex; gap: var(--space-2); flex-shrink: 0; }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand">🌾 FarmConnect</a>
+    <div style="display:flex;align-items:center;gap:var(--space-3);">
+      <span style="font-size:var(--text-sm);color:var(--color-text-secondary);">Welcome, <strong id="user-greeting">Trader</strong></span>
+      <button class="btn btn-sm btn-secondary" onclick="Auth.logout()">Logout</button>
+    </div>
+  </div>
+</header>
+
+<main class="main-content container">
+
+  <!-- Dashboard Heading -->
+  <div class="page-header">
+    <h1>Trader Dashboard 📊</h1>
+    <p id="time-greeting">Manage your contracts, track orders, and discover farmers.</p>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Active Contracts</div>
+      <div class="stat-change">↑ 2 this month</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Pending Contracts</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">10</div>
+      <div class="stat-label">Completed Contracts</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--color-success);">₹15L</div>
+      <div class="stat-label">Total Spend</div>
+      <div class="stat-change">↑ ₹5L pending payment</div>
+    </div>
+  </div>
+
+  <!-- Browse Farmers -->
+  <div class="flex items-center justify-between mb-6">
+    <h2 style="font-size:var(--text-xl);">Browse Farmer Profiles</h2>
+    <div class="search-bar" style="max-width:260px;">
+      <span>🔍</span>
+      <input type="text" id="farmer-search" placeholder="Search farmers..." oninput="filterFarmers(this.value)">
+    </div>
+  </div>
+
+  <!-- Crop Filter -->
+  <div class="farmer-filter">
+    <select id="crop-filter" class="form-select" style="max-width:220px;" onchange="filterByCrop(this.value)">
+      <option value="">All Crops</option>
+      <option value="wheat">Wheat</option>
+      <option value="corn">Corn</option>
+      <option value="rice">Rice</option>
+      <option value="soybean">Soybean</option>
+      <option value="barley">Barley</option>
+    </select>
+    <span id="results-count" class="text-sm text-muted"></span>
+  </div>
+
+  <!-- Farmer List -->
+  <div id="farmer-list"></div>
+
+  <!-- Contract Modal Trigger -->
+  <div id="contract-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;">
+    <div style="background:white;border-radius:var(--radius-xl);padding:var(--space-8);max-width:480px;width:90%;box-shadow:var(--shadow-xl);">
+      <h2 style="margin-bottom:var(--space-5);">Initiate Contract</h2>
+      <form id="contract-form">
+        <input type="hidden" id="farmer-id-input">
+        <div class="form-group">
+          <label for="quantity" class="form-label">Quantity (Metric Tons) <span class="required">*</span></label>
+          <input type="number" id="quantity" class="form-input" placeholder="e.g. 50" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="price-per-quintal" class="form-label">Price per Quintal (₹) <span class="required">*</span></label>
+          <input type="number" id="price-per-quintal" class="form-input" placeholder="e.g. 3000" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="delivery-date" class="form-label">Expected Delivery Date <span class="required">*</span></label>
+          <input type="date" id="delivery-date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="additional-terms" class="form-label">Additional Terms</label>
+          <textarea id="additional-terms" class="form-textarea" rows="2" placeholder="Any special conditions or quality requirements..."></textarea>
+        </div>
+        <div id="contract-alert" class="alert" style="display:none;"></div>
+        <div style="display:flex;gap:var(--space-3);justify-content:flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Request →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="active"><span style="font-size:1.25rem;">🏠</span><span>Home</span></a>
+  <a href="marketplace.html"><span style="font-size:1.25rem;">🛒</span><span>Market</span></a>
+  <a href="my-orders.html"><span style="font-size:1.25rem;">📦</span><span>Orders</span></a>
+  <a href="agreement.html"><span style="font-size:1.25rem;">📝</span><span>Contracts</span></a>
+</nav>
+
+<script src="../../js/auth.js"></script>
+<script src="../../js/utils.js"></script>
+<script>
+  const farmers = [
+    { id: 'F001', name: 'John Doe',      crop: 'wheat',   yieldTons: 50, location: 'Warangal, Telangana'  },
+    { id: 'F002', name: 'Jane Smith',    crop: 'corn',    yieldTons: 30, location: 'Guntur, Andhra Pradesh'},
+    { id: 'F003', name: 'Bob Brown',     crop: 'rice',    yieldTons: 40, location: 'Mysuru, Karnataka'    },
+    { id: 'F004', name: 'Shruthvik Rao', crop: 'soybean', yieldTons: 60, location: 'Nagpur, Maharashtra'  },
+    { id: 'F005', name: 'Ravi Kumar',    crop: 'wheat',   yieldTons: 55, location: 'Ludhiana, Punjab'     },
+    { id: 'F006', name: 'Sunita Devi',   crop: 'corn',    yieldTons: 35, location: 'Patna, Bihar'         },
+    { id: 'F007', name: 'Arun Patel',    crop: 'barley',  yieldTons: 45, location: 'Ahmedabad, Gujarat'   },
+  ];
+
+  let displayedFarmers = [...farmers];
+
+  function getInitial(name) { return name.charAt(0).toUpperCase(); }
+
+  function renderFarmers(list) {
+    const container = document.getElementById('farmer-list');
+    document.getElementById('results-count').textContent = `${list.length} farmer${list.length !== 1 ? 's' : ''} found`;
+    if (list.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:var(--space-10);">No farmers found for the selected filter.</p>';
+      return;
+    }
+    container.innerHTML = list.map(f => `
+      <div class="farmer-card animate-fade-in" id="farmer-${f.id}">
+        <div class="farmer-avatar">${getInitial(f.name)}</div>
+        <div class="farmer-info">
+          <div class="farmer-name">${f.name}</div>
+          <div class="farmer-meta">
+            <span>🌾 ${Utils.capitalize(f.crop)}</span>
+            <span>⚖️ ${f.yieldTons} tons available</span>
+            <span>📍 ${f.location}</span>
+          </div>
+        </div>
+        <div class="farmer-actions">
+          <button class="btn btn-sm btn-secondary" onclick="alert('Full farmer profile coming soon!')">Profile</button>
+          <button class="btn btn-sm btn-primary" onclick="openModal('${f.id}', '${f.name}')">Initiate Contract</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterFarmers(query) {
+    let filtered = farmers;
+    const crop = document.getElementById('crop-filter').value;
+    if (crop) filtered = filtered.filter(f => f.crop === crop);
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      filtered = filtered.filter(f => f.name.toLowerCase().includes(q) || f.location.toLowerCase().includes(q));
+    }
+    displayedFarmers = filtered;
+    renderFarmers(filtered);
+  }
+
+  function filterByCrop(cropValue) {
+    const query = document.getElementById('farmer-search').value;
+    filterFarmers(query);
+  }
+
+  function openModal(farmerId, farmerName) {
+    document.getElementById('farmer-id-input').value = farmerId;
+    document.getElementById('contract-modal').style.display = 'flex';
+    document.getElementById('delivery-date').min = new Date().toISOString().split('T')[0];
+  }
+
+  function closeModal() {
+    document.getElementById('contract-modal').style.display = 'none';
+    document.getElementById('contract-form').reset();
+    document.getElementById('contract-alert').style.display = 'none';
+  }
+
+  document.getElementById('contract-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const qty   = document.getElementById('quantity').value;
+    const price = document.getElementById('price-per-quintal').value;
+    const date  = document.getElementById('delivery-date').value;
+    const alertEl = document.getElementById('contract-alert');
+
+    if (!qty || !price || !date) {
+      alertEl.textContent = 'Please fill in all required fields.';
+      alertEl.className = 'alert alert-error';
+      alertEl.style.display = 'flex';
+      return;
+    }
+
+    alertEl.textContent = '✅ Contract request submitted! The farmer will be notified.';
+    alertEl.className = 'alert alert-success';
+    alertEl.style.display = 'flex';
+    setTimeout(() => closeModal(), 2000);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    Auth.populateUserDisplay();
+    renderFarmers(farmers);
+
+    const hour = new Date().getHours();
+    const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('time-greeting').textContent = `${greet}! Here's your trading overview for today.`;
+  });
+</script>
+</body>
+</html>
