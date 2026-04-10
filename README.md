@@ -76,7 +76,7 @@ SIH_Hackathon_43/
 ├── assets/
 │   └── icons/                   # UI icons
 │
-├── output screenshots/          # Screenshots for documentation
+├── output_screenshots/          # Screenshots for documentation
 │
 ├── .github/workflows/
 │   └── static.yml               # GitHub Pages auto-deployment workflow
@@ -112,6 +112,29 @@ The project uses a unified design system defined in `css/global.css`:
 - **CSS Variables:** All colors, spacing, shadows, and border-radii as custom properties
 - **Components:** Reusable `.btn`, `.card`, `.form-input`, `.badge`, `.alert` classes
 - **Responsive:** Mobile-first breakpoints at 480px, 768px, 1024px
+
+---
+
+## 📸 Screenshots
+
+<details>
+<summary><b>Click to expand Screenshot Gallery</b></summary>
+<br>
+
+### Landing Page
+<img src="output_screenshots/home.png" alt="Home Page" width="800">
+
+### Farmer Dashboard & Marketplace
+| Farmer Dashboard | Live Marketplace |
+|:---:|:---:|
+| <img src="output_screenshots/farmer_dashboard.png" width="400"> | <img src="output_screenshots/market_product_prize.png" width="400"> |
+
+### Contracts & Planning
+| digital Contact | Crop Calendar |
+|:---:|:---:|
+| <img src="output_screenshots/agreement.png" width="400"> | <img src="output_screenshots/crop_calender.png" width="400"> |
+
+</details>
 
 ---
 
